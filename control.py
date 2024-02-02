@@ -6,7 +6,6 @@
 @Create-time : 2/1/2024 3:29 PM
 """
 import win32gui
-from PIL import ImageGrab
 import socket
 import threading
 import time
@@ -18,13 +17,17 @@ import hashlib
 import numpy as np
 import win32api
 import win32con
-from pynput.keyboard import Listener as KeyboardListener, Listener
+from pynput.keyboard import Listener
 
 host = '0.0.0.0'
 port = 443
 
 
 def socket_service():
+    """
+    做为服务端启动
+    :return:
+    """
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -37,14 +40,18 @@ def socket_service():
 
     while True:
         conn, addr = s.accept()
-
         # conn.send(f'Hi, Welcome to the {addr}'.encode())
-
         t = threading.Thread(target=deal_data, args=(conn, addr))
         t.start()
 
 
 def socket_client(host, port):
+    """
+    做为客户端启动
+    :param host:
+    :param port:
+    :return:
+    """
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((host, port))
@@ -53,11 +60,11 @@ def socket_client(host, port):
         print(e)
         sys.exit(1)
 
-    receive_thread = threading.Thread(target=deal_data, args=(s, ['10.163.74.86']))
+    receive_thread = threading.Thread(target=deal_data, args=(s, [host]))
     receive_thread.start()
 
     # 在deal_data函数或相应位置启动键盘监听器线程
-    keyboard_thread = threading.Thread(target=start_keyboard_listener, args=(s, ['10.163.74.86']))
+    keyboard_thread = threading.Thread(target=start_keyboard_listener, args=(s, [host]))
     keyboard_thread.start()
 
 
@@ -192,4 +199,5 @@ def is_window_focused(window_title):
 
 if __name__ == '__main__':
     # socket_service()
-    socket_client('10.163.74.86', 39000)
+    # socket_client('10.163.74.86', 39000)
+    socket_client('0.0.0.0', 39000)

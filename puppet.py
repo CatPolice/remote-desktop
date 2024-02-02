@@ -24,7 +24,7 @@ import win32con
 import threading
 # pyinstaller 打包时需添加 --hidden-import=pynput.keyboard._win32 --hidden-import=pynput.mouse._win32
 # 生成命令脚本
-# pyinstaller --hidden-import=pynput.keyboard._win32 --hidden-import=pynput.mouse._win32 -D -p C:\Projects\remote-desktop\venv\Lib\site-packages puppet.py
+# pyinstaller --hidden-import=pynput.keyboard._win32 --hidden-import=pynput.mouse._win32 -D -p C:\Projects\remote-desktop-socket\venv\Lib\site-packages puppet.py
 
 resolution = (win32api.GetSystemMetrics(win32con.SM_CXSCREEN), win32api.GetSystemMetrics(win32con.SM_CYSCREEN))
 resize = (1400, 800)
@@ -113,7 +113,6 @@ def socket_client(host, port):
         if not flag:
             break
         time.sleep(0.01)
-    print('===============')
     s.close()
 
 

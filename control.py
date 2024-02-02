@@ -5,6 +5,7 @@
 @Email: 
 @Create-time : 2/1/2024 3:29 PM
 """
+import win32gui
 from PIL import ImageGrab
 import socket
 import threading
@@ -17,6 +18,7 @@ import hashlib
 import numpy as np
 import win32api
 import win32con
+from pynput.keyboard import Listener as KeyboardListener, Listener
 
 host = '0.0.0.0'
 port = 443
@@ -35,6 +37,9 @@ def socket_service():
 
     while True:
         conn, addr = s.accept()
+
+        # conn.send(f'Hi, Welcome to the {addr}'.encode())
+
         t = threading.Thread(target=deal_data, args=(conn, addr))
         t.start()
 
@@ -51,9 +56,12 @@ def socket_client(host, port):
     receive_thread = threading.Thread(target=deal_data, args=(s, ['10.163.74.86']))
     receive_thread.start()
 
+    # 在deal_data函数或相应位置启动键盘监听器线程
+    keyboard_thread = threading.Thread(target=start_keyboard_listener, args=(s, ['10.163.74.86']))
+    keyboard_thread.start()
+
 
 def deal_data(conn, addr):
-    print('Accept new connection from {0}'.format(addr))
     # conn.send('Hi, Welcome to the server!'.encode())
 
     while True:
@@ -141,6 +149,47 @@ def OnMouseMove(event, x, y, flags, param):
             print(e)
 
 
+def create_keyboard_listener(conn, addr):
+    def on_press(key):
+        # 现在可以使用extra_param了
+        if is_window_focused(addr):
+            msg = {'key_event': "True", 'key_data': f'{key}'}
+            conn.send(struct.pack('i', len(json.dumps(msg))))
+            conn.send(json.dumps(msg).encode())
+        else:
+            print('没有聚焦窗体')
+
+    def on_release(key):
+        if is_window_focused(addr):
+            pass
+        else:
+            print('没有聚焦窗体')
+    return on_press, on_release
+
+
+def start_keyboard_listener(conn, addr):
+    """
+    开始监听键盘事件
+    :param conn:
+    :param addr:
+    :return:
+    """
+    on_press, on_release = create_keyboard_listener(conn, addr)
+    with Listener(on_press=on_press, on_release=on_release) as listener:
+        listener.join()
+
+
+def is_window_focused(window_title):
+    """
+    判断窗体是否聚焦
+    :param window_title:
+    :return:
+    """
+    foreground_window = win32gui.GetForegroundWindow()
+    focused_window_title = win32gui.GetWindowText(foreground_window)
+    return window_title in focused_window_title
+
+
 if __name__ == '__main__':
     # socket_service()
-    socket_client('10.169.89.10', 39000)
+    socket_client('10.163.74.86', 39000)

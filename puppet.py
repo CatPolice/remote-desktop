@@ -7,6 +7,8 @@
 """
 import ast
 
+import win32gui
+import win32print
 from PIL import ImageGrab
 from pynput.keyboard import Controller as KeyboardController
 from pynput.keyboard import Key, KeyCode
@@ -27,7 +29,15 @@ import threading
 # pyinstaller --hidden-import=pynput.keyboard._win32 --hidden-import=pynput.mouse._win32 -D -p C:\Projects\remote-desktop-socket\venv\Lib\site-packages puppet.py
 
 resolution = (win32api.GetSystemMetrics(win32con.SM_CXSCREEN), win32api.GetSystemMetrics(win32con.SM_CYSCREEN))
-resize = (1400, 800)
+# resize = (1400, 800)
+
+# 获取真实的分辨率
+hDC = win32gui.GetDC(0)
+width = win32print.GetDeviceCaps(hDC, win32con.DESKTOPHORZRES)
+height = win32print.GetDeviceCaps(hDC, win32con.DESKTOPVERTRES)
+print(f'curren screen width:{width} ,height: {height}')
+
+resize = (int(width * 0.6), int(height * 0.6))
 
 
 def socket_service(host, port):

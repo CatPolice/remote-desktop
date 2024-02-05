@@ -29,14 +29,15 @@ import threading
 # pyinstaller --hidden-import=pynput.keyboard._win32 --hidden-import=pynput.mouse._win32 -D -p C:\Projects\remote-desktop-socket\venv\Lib\site-packages puppet.py
 
 resolution = (win32api.GetSystemMetrics(win32con.SM_CXSCREEN), win32api.GetSystemMetrics(win32con.SM_CYSCREEN))
+# 之前固定写死的分辨率
 # resize = (1400, 800)
 
 # 获取真实的分辨率
 hDC = win32gui.GetDC(0)
 width = win32print.GetDeviceCaps(hDC, win32con.DESKTOPHORZRES)
 height = win32print.GetDeviceCaps(hDC, win32con.DESKTOPVERTRES)
-print(f'curren screen width:{width} ,height: {height}')
-
+print(f'current screen width:{width} ,height: {height}')
+# 将当前屏幕的分辨率进行缩放
 resize = (int(width * 0.6), int(height * 0.6))
 
 

@@ -8,7 +8,6 @@
 import win32gui
 import socket
 import threading
-import time
 import struct
 import sys
 import cv2

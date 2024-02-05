@@ -256,5 +256,6 @@ def get_flag_event(value):
 
 
 if __name__ == '__main__':
+    # 启动服务
     # socket_client('10.237.186.25', 443)
     socket_service('0.0.0.0', 39000)

@@ -24,7 +24,7 @@ def login():
     # print(f"用户名: {username}")
     # print(f"密码: {password}")
     # 连接服务器
-    socket_client(address, port)
+    socket_client(address, int(port))
     close_window()
 
 

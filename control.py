@@ -198,5 +198,5 @@ def is_window_focused(window_title):
 
 if __name__ == '__main__':
     # socket_service()
-    # socket_client('10.163.74.86', 39000)
-    socket_client('0.0.0.0', 39000)
+    socket_client('10.169.140.165', 39000)
+    # socket_client('0.0.0.0', 39000)

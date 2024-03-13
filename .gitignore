@@ -1,5 +1,5 @@
 .idea/
 puppet.spec
 build/
-dist/
+puppet_exe/
 __pycache__/

@@ -38,7 +38,7 @@ width = win32print.GetDeviceCaps(hDC, win32con.DESKTOPHORZRES)
 height = win32print.GetDeviceCaps(hDC, win32con.DESKTOPVERTRES)
 print(f'current screen width:{width} ,height: {height}')
 # 将当前屏幕的分辨率进行缩放
-resize = (int(width * 0.6), int(height * 0.6))
+resize = (int(width * 0.5), int(height * 0.5))
 
 
 def socket_service(host, port):

@@ -3,3 +3,5 @@ puppet.spec
 build/
 puppet_exe/
 __pycache__/
+dist/
+control_window.spec

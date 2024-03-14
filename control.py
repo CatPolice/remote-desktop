@@ -63,7 +63,7 @@ def socket_client(host, port):
     receive_thread.start()
 
     # 在deal_data函数或相应位置启动键盘监听器线程
-    keyboard_thread = threading.Thread(target=start_keyboard_listener, args=(s, [host]))
+    keyboard_thread = threading.Thread(target=start_keyboard_listener, args=(s, host))
     keyboard_thread.start()
 
 
@@ -136,7 +136,7 @@ def recv_msg(conn, msg_header):
 
 
 def OnMouseMove(event, x, y, flags, param):
-    win32api.SetCursor(win32api.LoadCursor(0, win32con.IDC_ARROW ))
+    win32api.SetCursor(win32api.LoadCursor(0, win32con.IDC_ARROW))
 
     conn = param['conn']
     screen_x = round(x * param['resize_ratio'][0])
